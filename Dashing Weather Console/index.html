@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashing Weather Console</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Global Feed -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <span class="globe-icon">🌐</span>
+                <h2>Global Feed</h2>
+            </div>
+            <div class="feed-list">
+                <div class="feed-item"><span class="status-dot"></span> New York: <span class="feed-val">15°C - Rain</span></div>
+                <div class="feed-item"><span class="status-dot"></span> London: <span class="feed-val">12°C - Cloudy</span></div>
+                <div class="feed-item"><span class="status-dot"></span> Dubai: <span class="feed-val">35°C - Sunny</span></div>
+                <div class="feed-item"><span class="status-dot"></span> Lahore: <span class="feed-val">33°C - Haze</span></div>
+                <div class="feed-item"><span class="status-dot"></span> Paris: <span class="feed-val">18°C - Breezy</span></div>
+                <div class="feed-item"><span class="status-dot"></span> Tokyo: <span class="feed-val">22°C - Clear</span></div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Search Top Bar (Switch to °F button removed, Search button brought back) -->
+            <div class="top-bar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Search city (e.g. Karachi, Sialkot...)">
+                </div>
+                <button class="search-btn">Search</button>
+            </div>
+
+            <!-- Central Hero Weather Dashboard -->
+            <div class="weather-hero">
+                <h1 class="city-name">KARACHI, PK</h1>
+                <p class="current-date" id="currentDate">Loading date...</p>
+
+                <div class="temp-container">
+                    <img class="weather-icon" src="https://openweathermap.org/img/wn/01d@2x.png" alt="weather icon">
+                    <div class="temp-display">--°C</div>
+                </div>
+
+                <div class="badge-condition">
+                    <span class="condition-text">Loading weather...</span>
+                </div>
+
+                <!-- Live Metrics -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="m-icon">➔</span>
+                        <span class="m-label">WIND</span>
+                        <div class="metric-val wind-value">-- km/h</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="m-icon">💧</span>
+                        <span class="m-label">HUMIDITY</span>
+                        <div class="metric-val humidity-value">--%</div>
+                    </div>
+                    <div class="metric-card">
+                        <span class="m-icon">⏱</span>
+                        <span class="m-label">PRESSURE</span>
+                        <div class="metric-val pressure-value">-- hPa</div>
+                    </div>
+                </div>
+
+                <!-- 24-Hour Forecast Horizontal Section -->
+                <div class="forecast-section">
+                    <h3>24-Hour Forecast</h3>
+                    <div class="forecast-row" id="hourlyCards">
+                        <!-- JS Dynamic Hourly Cards -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detailed Hourly Weather Modal Popup -->
+    <div id="weatherModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modalTime">04:00 PM</h2>
+                <p id="modalDate">Forecast Detail</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-temp-wrapper">
+                    <img id="modalIcon" src="" alt="weather icon">
+                    <span id="modalTemp">21°C</span>
+                </div>
+                <p id="modalCondition" class="modal-desc">Clear Sky</p>
+                
+                <div class="modal-grid">
+                    <div class="m-detail-item">
+                        <span>Feels Like</span>
+                        <strong id="modalFeels">22°C</strong>
+                    </div>
+                    <div class="m-detail-item">
+                        <span>Humidity</span>
+                        <strong id="modalHumidity">75%</strong>
+                    </div>
+                    <div class="m-detail-item">
+                        <span>Wind Speed</span>
+                        <strong id="modalWind">12.5 km/h</strong>
+                    </div>
+                    <div class="m-detail-item">
+                        <span>Pressure</span>
+                        <strong id="modalPressure">1015 hPa</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

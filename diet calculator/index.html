@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Fitness Utility Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body {
+            background: linear-gradient(-45deg, #050b14, #0a192f, #0f172a, #020617);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #e2e8f0; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            overflow-x: hidden; position: relative;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body::before {
+            content: "sahth fitness";
+            position: absolute; font-family: 'Orbitron', sans-serif;
+            font-size: 8rem; color: rgba(0, 240, 255, 0.03);
+            white-space: nowrap; z-index: 0; user-select: none; pointer-events: none; letter-spacing: 10px;
+        }
+        .container {
+            position: relative; z-index: 1; width: 460px;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 24px; padding: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 240, 255, 0.1);
+        }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 1.25rem; color: #00f0ff; letter-spacing: 1px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+        .tabs { display: flex; justify-content: space-between; background: rgba(2, 6, 23, 0.6); border-radius: 12px; padding: 5px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .tab-btn { background: transparent; border: none; color: #94a3b8; font-size: 0.85rem; font-weight: 600; padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; }
+        .tab-btn.active { background: #00f0ff; color: #050b14; box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); }
+        .panel { display: none; }
+        .panel.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .input-group { margin-bottom: 15px; }
+        .label-row { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 5px; font-weight: 500; }
+        .label-row span:last-child { color: #00f0ff; font-weight: 600; }
+        select, input[type="range"] { width: 100%; background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 10px; color: #fff; padding: 10px; outline: none; font-size: 0.95rem; }
+        select { cursor: pointer; }
+        input[type="range"] { accent-color: #00f0ff; padding: 0; height: 6px; background: #1e293b; margin-top: 8px; }
+        .gender-container { display: flex; gap: 10px; margin-top: 15px; }
+        .gender-btn { flex: 1; background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); color: #94a3b8; padding: 10px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.3s; }
+        .gender-btn.active { border-color: #00f0ff; color: #00f0ff; background: rgba(0, 240, 255, 0.08); box-shadow: 0 0 10px rgba(0, 240, 255, 0.2); }
+        .result-card { background: rgba(2, 6, 23, 0.7); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 14px; padding: 15px; margin-top: 15px; }
+        .result-title { font-size: 0.8rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .result-value { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; color: #00f0ff; font-weight: 700; }
+        .result-desc { font-size: 0.85rem; margin-top: 5px; color: #cbd5e1; }
+        .scroll-box { max-height: 250px; overflow-y: auto; padding-right: 5px; }
+        .scroll-box::-webkit-scrollbar { width: 5px; }
+        .scroll-box::-webkit-scrollbar-thumb { background: #00f0ff; border-radius: 10px; }
+        .diet-item { background: rgba(15, 23, 42, 0.6); border-left: 3px solid #00f0ff; padding: 10px; margin-bottom: 10px; border-radius: 0 8px 8px 0; font-size: 0.85rem; }
+        .diet-item h4 { color: #00f0ff; font-size: 0.9rem; margin-bottom: 3px; }
+        .macro-bars { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+        .macro-row { display: flex; justify-content: space-between; font-size: 0.75rem; }
+        .macro-bar-bg { background: #1e293b; height: 6px; border-radius: 4px; overflow: hidden; }
+        .macro-fill { height: 100%; background: #00f0ff; width: 0%; transition: width 0.5s ease; }
+        .chat-box { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 12px; height: 190px; overflow-y: auto; padding: 12px; font-size: 0.85rem; margin-bottom: 10px; }
+        .chat-msg { margin-bottom: 10px; line-height: 1.4; }
+        .chat-msg.ai { color: #cbd5e1; }
+        .chat-msg.user { color: #00f0ff; text-align: right; }
+        .chips-container { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 8px; padding-bottom: 4px; }
+        .chips-container::-webkit-scrollbar { display: none; }
+        .chip { background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); color: #00f0ff; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 500; }
+        .chip:hover { background: #00f0ff; color: #020617; box-shadow: 0 0 8px rgba(0, 240, 255, 0.5); }
+        .chat-input-row { display: flex; gap: 8px; align-items: center; }
+        .chat-input-row input { flex: 1; padding: 10px 14px; font-size: 0.85rem; border-radius: 8px; background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(0, 240, 255, 0.3); color: #fff; outline: none; }
+        .mic-btn { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(0, 240, 255, 0.3); color: #00f0ff; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: 0.2s; }
+        .mic-btn.listening { background: #ef4444; color: #fff; border-color: #ef4444; animation: pulseMic 1.5s infinite; }
+        @keyframes pulseMic { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        .send-btn { background: #00f0ff; border: none; color: #020617; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: 0.2s; }
+        .send-btn:hover { background: #38bdf8; box-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1><i class="fa-solid fa-bolt"></i> FITNESS CALCULATOR <i class="fa-solid fa-bolt"></i></h1>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('bmi')">BMI</button>
+            <button class="tab-btn" onclick="switchTab('calories')">Calories</button>
+            <button class="tab-btn" onclick="switchTab('diet')">Diet Plan</button>
+            <button class="tab-btn" onclick="switchTab('ai')">AI Coach</button>
+        </div>
+
+        <!-- PANEL 1: BMI -->
+        <div id="bmi-panel" class="panel active">
+            <div class="input-group">
+                <div class="label-row"><span>Weight</span><span id="weight-val">89 kg</span></div>
+                <input type="range" id="weight-slider" min="40" max="150" value="89" oninput="calculateFitness()">
+            </div>
+            <div class="input-group">
+                <div class="label-row"><span>Goal & Focus</span></div>
+                <select id="goal-select" onchange="calculateFitness()">
+                    <option value="Fat Loss / Weight Reduction">Fat Loss / Weight Reduction</option>
+                    <option value="Muscle Building / Hypertrophy">Muscle Building / Hypertrophy</option>
+                    <option value="Maintenance">Maintenance</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <div class="label-row"><span>Height</span><span id="height-val">165 cm</span></div>
+                <input type="range" id="height-slider" min="130" max="220" value="165" oninput="calculateFitness()">
+            </div>
+            <div class="input-group">
+                <div class="label-row"><span>Age</span><span id="age-val">28 yrs</span></div>
+                <input type="range" id="age-slider" min="15" max="80" value="28" oninput="calculateFitness()">
+            </div>
+            <div class="gender-container">
+                <button class="gender-btn active" id="male-btn" onclick="setGender('male')">Male</button>
+                <button class="gender-btn" id="female-btn" onclick="setGender('female')">Female</button>
+            </div>
+            <div class="result-card">
+                <div class="result-title">Body Mass Index (BMI)</div>
+                <div class="result-value" id="bmi-result">32.7</div>
+                <div class="result-desc" id="bmi-category">Category: Obese</div>
+                <div class="result-desc" style="color: #00f0ff; font-size: 0.75rem; margin-top: 4px;" id="goal-display">Selected Goal: Fat Loss / Weight Reduction</div>
+            </div>
+        </div>
+
+        <!-- PANEL 2: Calories -->
+        <div id="calories-panel" class="panel">
+            <div class="result-card" style="margin-top: 0;">
+                <div class="result-title">Estimated Daily Calorie Needs (BMR + Activity)</div>
+                <div class="result-value" id="calorie-result">2,456 kcal</div>
+                <div class="result-desc">Based on your weight, height, and age metrics.</div>
+            </div>
+            <div class="result-card">
+                <div class="result-title">Daily Macronutrient Split Target</div>
+                <div class="macro-bars">
+                    <div class="macro-row"><span>Protein (35%)</span><span id="macro-p">180g</span></div>
+                    <div class="macro-bar-bg"><div class="macro-fill" id="fill-p" style="width: 35%;"></div></div>
+                    <div class="macro-row" style="margin-top:4px;"><span>Carbs (40%)</span><span id="macro-c">205g</span></div>
+                    <div class="macro-bar-bg"><div class="macro-fill" id="fill-c" style="width: 40%;"></div></div>
+                    <div class="macro-row" style="margin-top:4px;"><span>Fats (25%)</span><span id="macro-f">57g</span></div>
+                    <div class="macro-bar-bg"><div class="macro-fill" id="fill-f" style="width: 25%;"></div></div>
+                </div>
+            </div>
+            <div class="result-card" style="display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div class="result-title">Water Intake Goal</div>
+                    <div class="result-value" id="water-goal" style="font-size: 1.3rem;">3.5 Liters</div>
+                </div>
+                <i class="fa-solid fa-droplet" style="font-size: 2rem; color: #00f0ff; text-shadow: 0 0 10px rgba(0,240,255,0.5);"></i>
+            </div>
+        </div>
+
+        <!-- PANEL 3: Diet Plan -->
+        <div id="diet-panel" class="panel">
+            <div class="result-title" style="margin-bottom: 8px;">Target Goal Diet Blueprint</div>
+            <div class="scroll-box">
+                <div class="diet-item"><h4>Breakfast (514 kcal)</h4><p>Oats with skimmed milk & 1 fresh apple</p></div>
+                <div class="diet-item"><h4>Lunch (514 kcal)</h4><p>Grilled chicken breast with brown rice & green salad</p></div>
+                <div class="diet-item"><h4>Evening Snack (514 kcal)</h4><p>Green tea & a handful of raw almonds</p></div>
+                <div class="diet-item"><h4>Dinner (514 kcal)</h4><p>Boiled egg whites & steamed mixed vegetables</p></div>
+            </div>
+            <div style="text-align: right; font-size: 0.8rem; margin-top: 10px; color: #00f0ff; font-weight: 600;">Plan Total Calories: 2,056 kcal</div>
+        </div>
+
+        <!-- PANEL 4: AI Coach -->
+        <div id="ai-panel" class="panel">
+            <div class="chat-box" id="chat-messages">
+                <div class="chat-msg ai">Hello! Ask me for a 5, 10, 20, or 50 days diet plan via typing or voice mic! 🎙️</div>
+            </div>
+            
+            <div class="chips-container">
+                <div class="chip" onclick="quickPrompt('5 Days Plan')">5 Days Plan</div>
+                <div class="chip" onclick="quickPrompt('10 Days Plan')">10 Days Plan</div>
+                <div class="chip" onclick="quickPrompt('20 Days Plan')">20 Days Plan</div>
+                <div class="chip" onclick="quickPrompt('50 Days Plan')">50 Days Plan</div>
+            </div>
+
+            <div class="chat-input-row">
+                <button class="mic-btn" id="mic-button" onclick="toggleSpeechRecognition()" title="Click to Speak"><i class="fa-solid fa-microphone"></i></button>
+                <input type="text" id="chat-input" placeholder="Type or use mic for 5, 10, 20, 50 days..." onkeypress="handleKey(event)">
+                <button class="send-btn" onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentGender = 'male';
+        let recognition = null;
+        let isListening = false;
+
+        // Initialize Speech Recognition
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'en-US';
+
+            recognition.onstart = function() {
+                isListening = true;
+                const micBtn = document.getElementById('mic-button');
+                micBtn.classList.add('listening');
+                document.getElementById('chat-input').placeholder = "Listening... Speak now!";
+            };
+
+            recognition.onresult = function(event) {
+                const speechToText = event.results[0][0].transcript;
+                document.getElementById('chat-input').value = speechToText;
+                sendAiMessage();
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error", event.error);
+                stopListeningState();
+            };
+
+            recognition.onend = function() {
+                stopListeningState();
+            };
+        }
+
+        function toggleSpeechRecognition() {
+            if (!recognition) {
+                alert("Speech recognition is not supported in your browser. Please use Google Chrome.");
+                return;
+            }
+            if (isListening) {
+                recognition.stop();
+            } else {
+                try {
+                    recognition.start();
+                } catch(e) {
+                    console.log(e);
+                }
+            }
+        }
+
+        function stopListeningState() {
+            isListening = false;
+            const micBtn = document.getElementById('mic-button');
+            if(micBtn) micBtn.classList.remove('listening');
+            const inputField = document.getElementById('chat-input');
+            if(inputField) inputField.placeholder = "Type or use mic for 5, 10, 20, 50 days...";
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId + '-panel').classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function setGender(gender) {
+            currentGender = gender;
+            document.getElementById('male-btn').classList.toggle('active', gender === 'male');
+            document.getElementById('female-btn').classList.toggle('active', gender === 'female');
+            calculateFitness();
+        }
+
+        function calculateFitness() {
+            const weight = parseInt(document.getElementById('weight-slider').value);
+            const height = parseInt(document.getElementById('height-slider').value);
+            const age = parseInt(document.getElementById('age-slider').value);
+            const goal = document.getElementById('goal-select').value;
+
+            document.getElementById('weight-val').innerText = weight + ' kg';
+            document.getElementById('height-val').innerText = height + ' cm';
+            document.getElementById('age-val').innerText = age + ' yrs';
+            document.getElementById('goal-display').innerText = 'Selected Goal: ' + goal;
+
+            localStorage.setItem('fitness_weight', weight);
+            localStorage.setItem('fitness_height', height);
+            localStorage.setItem('fitness_age', age);
+            localStorage.setItem('fitness_goal', goal);
+
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+            document.getElementById('bmi-result').innerText = bmi;
+
+            let category = "Normal weight";
+            if (bmi < 18.5) category = "Underweight";
+            else if (bmi >= 25 && bmi < 30) category = "Overweight";
+            else if (bmi >= 30) category = "Obese";
+            document.getElementById('bmi-category').innerText = "Category: " + category;
+
+            let bmr = (10 * weight) + (6.25 * height) - (5 * age);
+            bmr = (currentGender === 'male') ? (bmr + 5) : (bmr - 161);
+            const totalCalories = Math.round(bmr * 1.375);
+            document.getElementById('calorie-result').innerText = totalCalories.toLocaleString() + ' kcal';
+
+            document.getElementById('macro-p').innerText = Math.round((totalCalories * 0.35) / 4) + 'g';
+            document.getElementById('macro-c').innerText = Math.round((totalCalories * 0.40) / 4) + 'g';
+            document.getElementById('macro-f').innerText = Math.round((totalCalories * 0.25) / 9) + 'g';
+
+            const waterLiters = ((weight * 0.035).toFixed(1));
+            document.getElementById('water-goal').innerText = waterLiters + ' Liters';
+        }
+
+        // Smart Diet Plan Generator Logic with corrected priority (50 checked first)
+        function sendAiMessage() {
+            const inputField = document.getElementById('chat-input');
+            const text = inputField.value.trim();
+            if(!text) return;
+
+            appendChat(text, 'user');
+            inputField.value = '';
+
+            setTimeout(() => {
+                const query = text.toLowerCase();
+                let response = "Here is your customized routine: Focus on lean protein, fresh greens, and proper hydration!";
+
+                if (query.includes('50') || query.includes('unlimited')) {
+                    response = "📋 **50-Day Unlimited Lifestyle Plan:**<br>• Month 1: Habit building & tracking macros daily via this app.<br>• Month 2: Progressive overload weight lifting + HIIT cardio.<br>• Rotation: Switch protein sources every 10 days.<br>• Rule: 80% nutrition discipline, 20% workout consistency!";
+                } 
+                else if (query.includes('5')) {
+                    response = "📋 **5-Day Rapid Shred Plan:**<br>• Day 1-2: Low Carb, High Protein (Boiled eggs & chicken breast).<br>• Day 3: Liquid & Detox (Green tea, lemon water, black coffee).<br>• Day 4-5: Balanced Greens & Grilled Fish.<br>• Target: Quick metabolic jumpstart.";
+                } 
+                else if (query.includes('10')) {
+                    response = "📋 **10-Day Transformation Plan:**<br>• Days 1-5: Clean eating (Oats, chicken, brown rice, zero sugar).<br>• Days 6-10: Carb-cycling with intense workouts.<br>• Target: Noticeable fat loss & increased energy levels.";
+                } 
+                else if (query.includes('20')) {
+                    response = "📋 **20-Day Full Structural Blueprint:**<br>• Phase 1 (1-10): Strict caloric deficit & clean hydration.<br>• Phase 2 (11-20): Muscle retention macros (Protein 40%, Carbs 30%, Fats 30%).<br>• Target: Sustainable body recomposition.";
+                }
+
+                appendTypewriterChat(response, 'ai');
+            }, 500);
+        }
+
+        function quickPrompt(promptText) {
+            document.getElementById('chat-input').value = promptText;
+            sendAiMessage();
+        }
+
+        function handleKey(e) {
+            if(e.key === 'Enter') sendAiMessage();
+        }
+
+        function appendChat(text, sender) {
+            const box = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            div.innerText = text;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function appendTypewriterChat(text, sender) {
+            const box = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = `chat-msg ${sender}`;
+            box.appendChild(div);
+            
+            let i = 0;
+            function typing() {
+                if (i < text.length) {
+                    if (text.substr(i, 4) === '<br>') {
+                        div.innerHTML += '<br>';
+                        i += 4;
+                    } else {
+                        div.innerHTML += text.charAt(i);
+                        i++;
+                    }
+                    box.scrollTop = box.scrollHeight;
+                    setTimeout(typing, 10);
+                }
+            }
+            typing();
+        }
+
+        window.onload = function() {
+            if(localStorage.getItem('fitness_weight')) {
+                document.getElementById('weight-slider').value = localStorage.getItem('fitness_weight');
+                document.getElementById('height-slider').value = localStorage.getItem('fitness_height');
+                document.getElementById('age-slider').value = localStorage.getItem('fitness_age');
+                document.getElementById('goal-select').value = localStorage.getItem('fitness_goal');
+                calculateFitness();
+            }
+        }
+    </script>
+</body>
+</html>

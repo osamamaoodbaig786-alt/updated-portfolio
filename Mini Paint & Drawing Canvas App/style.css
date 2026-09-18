@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #f857a6, #ff5858);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: #fff;
+    width: 650px;
+    max-width: 100%;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.container h2 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.container h2 i {
+    color: #ff5858;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.tool {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #555;
+}
+
+.tool input[type="color"] {
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: none;
+}
+
+.tool input[type="range"] {
+    accent-color: #ff5858;
+}
+
+.toolbar button {
+    background: #ff5858;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.toolbar button:hover {
+    background: #e04848;
+}
+
+.canvas-container {
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+    width: 100%;
+}
+
+canvas {
+    display: block;
+    cursor: crosshair;
+    background: #fff;
+    width: 100%;
+    height: auto;
+}
+
+/* Mobile Screens Optimization */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px 10px;
+    }
+
+    .toolbar {
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .container h2 {
+        font-size: 18px;
+    }
+}
+```[cite: 4]

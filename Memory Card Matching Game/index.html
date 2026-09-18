@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Master Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="game-container">
+        <h2><i class="fa-solid fa-gamepad"></i> Memory Master Pro</h2>
+        
+        <div class="controls-bar">
+            <select id="themeSelect">
+                <option value="tech">🚀 Tech & Gadgets</option>
+                <option value="animals">🐼 Cute Animals</option>
+                <option value="food">🍕 Fast Food</option>
+            </select>
+            <button id="restartBtn"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+        </div>
+
+        <div class="stats">
+            <div><i class="fa-solid fa-stopwatch"></i> Time: <span id="timer">45</span>s</div>
+            <div><i class="fa-solid fa-bolt"></i> Moves: <span id="moves">0</span>/5</div>
+            <div><i class="fa-solid fa-star"></i> Points: <span id="score">0</span></div>
+        </div>
+
+        <div class="grid-container" id="gridContainer">
+            <!-- Cards yahan aayenge -->
+        </div>
+    </div>
+
+    <!-- Win / Loss Modal Popup -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-trophy" id="modalIcon"></i>
+            <h3 id="modalTitle">Zabardast!</h3>
+            <p id="modalText">Aap ne saare pairs match kar liye!</p>
+            <button id="modalBtn">Dobara Kheleinp</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

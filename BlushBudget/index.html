@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlushBudget - Aesthetic Budget Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fae8ff 50%, #f3e8ff 100%);
+            color: #475569;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Enhanced Smooth Entry Animation for Container */
+        .container {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(244, 114, 182, 0.2);
+            border-radius: 28px;
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(244, 114, 182, 0.15);
+            animation: fadeInScale 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .profile-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #f472b6, #a78bfa);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
+            animation: pulseIcon 3s infinite ease-in-out;
+        }
+
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Balance Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244, 114, 182, 0.1);
+        }
+
+        .card.full {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(167, 139, 250, 0.1));
+            border: 1px solid rgba(244, 114, 182, 0.3);
+        }
+
+        .card-title {
+            font-size: 11px;
+            color: #64748b;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            transition: all 0.3s ease;
+        }
+
+        .pop-effect {
+            animation: popAmount 0.4s ease;
+        }
+
+        @keyframes popAmount {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); color: #ec4899; }
+            100% { transform: scale(1); }
+        }
+
+        .card.full .card-amount {
+            font-size: 22px;
+            color: #db2777;
+        }
+
+        /* Form Styling */
+        .form-section {
+            background: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .form-section h3 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            color: #1e293b;
+            font-size: 12px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        input:focus, select:focus {
+            border-color: #ec4899;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.15);
+        }
+
+        button.btn-primary {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(236, 72, 153, 0.3);
+        }
+
+        button.btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Breakdown Progress Bars */
+        .breakdown-section {
+            background: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .breakdown-section h3 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .category-progress {
+            margin-bottom: 10px;
+        }
+
+        .category-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            margin-bottom: 4px;
+            color: #64748b;
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: #f1f5f9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Transactions List */
+        .transactions {
+            background: #fff;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(244, 114, 182, 0.15);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .transactions h3 {
+            font-size: 13px;
+            margin-bottom: 10px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .transaction-list {
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .transaction-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8fafc;
+            padding: 9px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
+            animation: slideInItem 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes slideInItem {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
+        }
+
+        .t-details h4 {
+            font-size: 12px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .t-details span {
+            font-size: 9px;
+            color: #64748b;
+            background: #e2e8f0;
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .t-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .t-amount {
+            font-size: 12px;
+            font-weight: 700;
+            color: #e11d48;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #f43f5e;
+            cursor: pointer;
+            font-size: 11px;
+            opacity: 0.7;
+            transition: all 0.2s;
+        }
+
+        .delete-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            font-size: 11px;
+            color: #94a3b8;
+            padding: 12px;
+        }
+
+        /* --- LAPTOP / DESKTOP RESPONSIVE VIEW (Screen > 900px) --- */
+        @media (min-width: 900px) {
+            .container {
+                max-width: 920px;
+                padding: 32px;
+            }
+            
+            .desktop-dashboard {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .full-span {
+                grid-column: span 2;
+            }
+
+            .transaction-list {
+                max-height: 220px;
+            }
+        }
+
+        /* --- EXTRA MOBILE RESPONSIVENESS (< 480px) --- */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card.full {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="full-span">
+            <div class="logo">
+                <h1>BlushBudget 💕</h1>
+                <p>Aesthetic Budget & Expense Planner</p>
+            </div>
+            <div class="profile-icon">B</div>
+        </header>
+
+        <div class="desktop-dashboard">
+            
+            <div class="left-col">
+                <div class="cards-grid">
+                    <!-- Remaining Budget (Full Width) -->
+                    <div class="card full">
+                        <div class="card-title"><i class="fa-solid fa-wallet"></i> Remaining Budget</div>
+                        <div class="card-amount" id="remainingBudget">Rs. 45,000</div>
+                    </div>
+                    <!-- Monthly Limit -->
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-bullseye"></i> Monthly Limit</div>
+                        <div class="card-amount" id="displayBudget" style="font-size: 16px;">Rs. 50,000</div>
+                    </div>
+                    <!-- Total Savings -->
+                    <div class="card">
+                        <div class="card-title"><i class="fa-solid fa-piggy-bank"></i> Total Savings</div>
+                        <div class="card-amount" id="displaySavings" style="font-size: 16px; color: #10b981;">Rs. 5,000</div>
+                    </div>
+                    <!-- Total Spent (Full Width) -->
+                    <div class="card full">
+                        <div class="card-title"><i class="fa-solid fa-arrow-trend-down"></i> Total Spent</div>
+                        <div class="card-amount" id="totalSpent" style="color: #e11d48;">Rs. 0</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Set Budget & Savings</h3>
+                    <div class="input-group" style="margin-bottom: 8px;">
+                        <input type="number" id="budgetInput" placeholder="Monthly Limit (Rs)">
+                    </div>
+                    <div class="input-group">
+                        <input type="number" id="savingsInput" placeholder="Target Savings Specific Amount (Rs)">
+                        <button class="btn-primary" onclick="updateBudgetAndSavings()" style="width: auto; padding: 10px 16px;">Set</button>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Add New Expense</h3>
+                    <div class="input-group">
+                        <input type="text" id="expenseName" placeholder="Expense title (e.g. Coffee)">
+                        <input type="number" id="expenseAmount" placeholder="Amount (Rs)">
+                    </div>
+                    <div class="input-group" style="margin-bottom: 8px;">
+                        <select id="expenseCategory">
+                            <option value="Food">☕ Food & Cafe</option>
+                            <option value="Bills">⚡ Bills & Utilities</option>
+                            <option value="Travel">🚗 Travel & Uber</option>
+                            <option value="Shopping">🛍️ Shopping & Skincare</option>
+                            <option value="Others">🎀 Others</option>
+                        </select>
+                    </div>
+                    <button class="btn-primary" onclick="addExpense()">Add Expense</button>
+                </div>
+            </div>
+
+            <div class="right-col">
+                <div class="breakdown-section">
+                    <h3>Spending Breakdown</h3>
+                    <div class="category-progress">
+                        <div class="category-info">
+                            <span>☕ Food & Cafe</span>
+                            <span id="foodVal">Rs. 0</span>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="foodBar" style="width: 0%; background: #ec4899;"></div></div>
+                    </div>
+                    <div class="category-progress">
+                        <div class="category-info">
+                            <span>⚡ Bills & Utilities</span>
+                            <span id="billsVal">Rs. 0</span>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="billsBar" style="width: 0%; background: #8b5cf6;"></div></div>
+                    </div>
+                    <div class="category-progress">
+                        <div class="category-info">
+                            <span>🚗 Travel & Uber</span>
+                            <span id="travelVal">Rs. 0</span>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="travelBar" style="width: 0%; background: #3b82f6;"></div></div>
+                    </div>
+                    <div class="category-progress">
+                        <div class="category-info">
+                            <span>🛍️ Shopping & Others</span>
+                            <span id="otherVal">Rs. 0</span>
+                        </div>
+                        <div class="progress-bar-bg"><div class="progress-bar-fill" id="otherBar" style="width: 0%; background: #10b981;"></div></div>
+                    </div>
+                </div>
+
+                <div class="transactions">
+                    <h3>Recent Transactions</h3>
+                    <div class="transaction-list" id="transactionList">
+                        <div class="empty-state">No expenses recorded yet.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        let monthlyBudget = localStorage.getItem('blush_budget') ? parseFloat(localStorage.getItem('blush_budget')) : 50000;
+        let targetSavings = localStorage.getItem('blush_savings') ? parseFloat(localStorage.getItem('blush_savings')) : 5000; 
+        let expenses = localStorage.getItem('blush_expenses') ? JSON.parse(localStorage.getItem('blush_expenses')) : [];
+
+        updateUI();
+
+        function saveData() {
+            localStorage.setItem('blush_budget', monthlyBudget);
+            localStorage.setItem('blush_savings', targetSavings);
+            localStorage.setItem('blush_expenses', JSON.stringify(expenses));
+        }
+
+        function triggerPop(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.remove('pop-effect');
+            void el.offsetWidth;
+            el.classList.add('pop-effect');
+        }
+
+        function updateBudgetAndSavings() {
+            const bInput = document.getElementById('budgetInput').value;
+            const sInput = document.getElementById('savingsInput').value;
+
+            let updated = false;
+            if(bInput && bInput > 0) {
+                monthlyBudget = parseFloat(bInput);
+                document.getElementById('budgetInput').value = '';
+                updated = true;
+            }
+            if(sInput !== '') {
+                targetSavings = parseFloat(sInput) >= 0 ? parseFloat(sInput) : 0;
+                document.getElementById('savingsInput').value = '';
+                updated = true;
+            }
+
+            if(updated) {
+                saveData();
+                updateUI();
+                triggerPop('remainingBudget');
+            } else {
+                alert('Please enter a valid budget or savings amount.');
+            }
+        }
+
+        function addExpense() {
+            const name = document.getElementById('expenseName').value;
+            const amount = parseFloat(document.getElementById('expenseAmount').value);
+            const category = document.getElementById('expenseCategory').value;
+
+            if(!name || !amount || amount <= 0) {
+                alert('Please enter a valid title and amount.');
+                return;
+            }
+
+            const expense = {
+                id: Date.now(),
+                name,
+                amount,
+                category
+            };
+
+            expenses.unshift(expense);
+            document.getElementById('expenseName').value = '';
+            document.getElementById('expenseAmount').value = '';
+            saveData();
+            updateUI();
+            triggerPop('remainingBudget');
+            triggerPop('totalSpent');
+        }
+
+        function deleteExpense(id) {
+            expenses = expenses.filter(item => item.id !== id);
+            saveData();
+            updateUI();
+            triggerPop('remainingBudget');
+            triggerPop('totalSpent');
+        }
+
+        function updateUI() {
+            let totalSpent = expenses.reduce((acc, item) => acc + item.amount, 0);
+            let remaining = monthlyBudget - totalSpent - targetSavings;
+
+            document.getElementById('displayBudget').innerText = `Rs. ${monthlyBudget.toLocaleString()}`;
+            document.getElementById('displaySavings').innerText = `Rs. ${targetSavings.toLocaleString()}`;
+            document.getElementById('totalSpent').innerText = `Rs. ${totalSpent.toLocaleString()}`;
+            document.getElementById('remainingBudget').innerText = `Rs. ${remaining.toLocaleString()}`;
+
+            let foodTotal = expenses.filter(i => i.category === 'Food').reduce((a, b) => a + b.amount, 0);
+            let billsTotal = expenses.filter(i => i.category === 'Bills').reduce((a, b) => a + b.amount, 0);
+            let travelTotal = expenses.filter(i => i.category === 'Travel').reduce((a, b) => a + b.amount, 0);
+            let otherTotal = expenses.filter(i => i.category === 'Shopping' || i.category === 'Others').reduce((a, b) => a + b.amount, 0);
+
+            document.getElementById('foodVal').innerText = `Rs. ${foodTotal}`;
+            document.getElementById('billsVal').innerText = `Rs. ${billsTotal}`;
+            document.getElementById('travelVal').innerText = `Rs. ${travelTotal}`;
+            document.getElementById('otherVal').innerText = `Rs. ${otherTotal}`;
+
+            let calcPercent = (val) => totalSpent > 0 ? Math.min(Math.round((val / totalSpent) * 100), 100) : 0;
+            
+            document.getElementById('foodBar').style.width = calcPercent(foodTotal) + '%';
+            document.getElementById('billsBar').style.width = calcPercent(billsTotal) + '%';
+            document.getElementById('travelBar').style.width = calcPercent(travelTotal) + '%';
+            document.getElementById('otherBar').style.width = calcPercent(otherTotal) + '%';
+
+            const listEl = document.getElementById('transactionList');
+            if(expenses.length === 0) {
+                listEl.innerHTML = `<div class="empty-state">No expenses recorded yet.</div>`;
+                return;
+            }
+
+            let html = '';
+            expenses.forEach(item => {
+                html += `
+                    <div class="transaction-item">
+                        <div class="t-details">
+                            <h4>${item.name}</h4>
+                            <span>${item.category}</span>
+                        </div>
+                        <div class="t-right">
+                            <span class="t-amount">-Rs. ${item.amount}</span>
+                            <button class="delete-btn" onclick="deleteExpense(${item.id})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+            listEl.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic 3D Hyper-Calc</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Dynamic Bubbly Floating Layer -->
+    <div class="bubble-container">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- Main 3D Auto-Moving Container -->
+    <div class="calculator-container" id="tilt-container">
+        <div class="calculator">
+            
+            <!-- Top Bar with Premium Dot UI -->
+            <div class="calc-header">
+                <span class="brand-text">HYPER-CALC</span>
+                <div class="dots">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                </div>
+            </div>
+
+            <!-- Display Screen -->
+            <input type="text" id="display" readonly placeholder="0">
+            
+            <!-- Buttons Grid Layout -->
+            <div class="buttons">
+                <button class="btn clear" onclick="pressButton('clear')">C</button>
+                <button class="btn operator" onclick="pressButton('/')">÷</button>
+                <button class="btn operator" onclick="pressButton('*')">×</button>
+                <button class="btn operator" onclick="pressButton('-')">-</button>
+                
+                <button class="btn" onclick="pressButton('7')">7</button>
+                <button class="btn" onclick="pressButton('8')">8</button>
+                <button class="btn" onclick="pressButton('9')">9</button>
+                <button class="btn operator" onclick="pressButton('+')">+</button>
+                
+                <button class="btn" onclick="pressButton('4')">4</button>
+                <button class="btn" onclick="pressButton('5')">5</button>
+                <button class="btn" onclick="pressButton('6')">6</button>
+                <button class="btn equal" onclick="pressButton('equal')">=</button>
+                
+                <button class="btn" onclick="pressButton('1')">1</button>
+                <button class="btn" onclick="pressButton('2')">2</button>
+                <button class="btn" onclick="pressButton('3')">3</button>
+                <button class="btn" onclick="pressButton('0')">0</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

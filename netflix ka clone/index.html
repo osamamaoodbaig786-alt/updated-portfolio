@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix Clone</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <style>
+    /* ==========================================
+       1. RESET & BASE DARK THEME
+    ========================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #111 !important; /* Pure Dark Netflix Theme */
+      color: #fff;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ==========================================
+       2. NAVBAR
+    ========================================== */
+    .nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      width: 90px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #b3b3b3;
+    }
+
+    .nav-avatar {
+      width: 32px;
+      border-radius: 4px;
+    }
+
+    /* ==========================================
+       3. HERO BANNER WITH STRANGER THINGS BACKDROP
+    ========================================== */
+    .banner {
+      position: relative;
+      height: 85vh;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 50px;
+      overflow: hidden;
+
+      /* Netflix HD Backdrop Wallpaper */
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), #111),
+                  url('https://images.alphacoders.com/882/882548.jpg') no-repeat center center/cover;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+      max-width: 500px;
+    }
+
+    .banner-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+    }
+
+    .banner-buttons {
+      display: flex;
+      gap: 12px;
+      margin: 1.2rem 0;
+    }
+
+    .btn {
+      cursor: pointer;
+      border: none;
+      font-weight: 700;
+      border-radius: 4px;
+      padding: 0.6rem 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+    }
+
+    .play-btn {
+      background-color: white;
+      color: black;
+    }
+
+    .play-btn:hover {
+      background-color: rgba(255, 255, 255, 0.75);
+    }
+
+    .info-btn {
+      background-color: rgba(109, 109, 110, 0.7);
+      color: white;
+    }
+
+    .info-btn:hover {
+      background-color: rgba(109, 109, 110, 0.4);
+    }
+
+    .banner-description {
+      font-size: 1rem;
+      line-height: 1.4;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.9);
+    }
+
+    .banner-fade-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 15rem;
+      background-image: linear-gradient(180deg, transparent, rgba(37, 37, 37, 0.61), #111);
+      z-index: 1;
+    }
+
+    /* ==========================================
+       4. MOVIE SLIDERS
+    ========================================== */
+    .rows-container {
+      padding: 20px 50px;
+      margin-top: -50px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .row {
+      margin-bottom: 30px;
+    }
+
+    .row h2 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+
+    .row-posters {
+      display: flex;
+      gap: 12px;
+      overflow-x: scroll;
+      padding: 10px 0;
+      scroll-behavior: smooth;
+    }
+
+    .row-posters::-webkit-scrollbar {
+      display: none;
+    }
+
+    .row-poster {
+      width: 220px;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 4px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .row-poster:hover {
+      transform: scale(1.08);
+    }
+
+    /* ==========================================
+       5. FAQ ACCORDION
+    ========================================== */
+    .faq-section {
+      max-width: 850px;
+      margin: 60px auto;
+      padding: 0 20px;
+    }
+
+    .faq-section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+    }
+
+    .accordion-item {
+      background-color: #303030;
+      margin-bottom: 8px;
+      border-radius: 2px;
+    }
+
+    .accordion-header {
+      padding: 20px;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      background-color: #303030;
+      border-top: 1px solid #111;
+    }
+
+    .accordion-body p {
+      padding: 20px;
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #d2d2d2;
+    }
+
+    .accordion-item.active .accordion-body {
+      max-height: 200px;
+    }
+
+    .accordion-item.active .icon {
+      transform: rotate(45deg);
+    }
+
+    /* ==========================================
+       6. TRAILER POPUP MODAL
+    ========================================== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+    }
+
+    .modal-content {
+      position: relative;
+      margin: 5% auto;
+      width: 80%;
+      max-width: 850px;
+    }
+
+    .close-btn {
+      position: absolute;
+      right: 0;
+      top: -45px;
+      color: white;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="nav" id="nav">
+    <img class="nav-logo" src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" alt="Netflix Logo">
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">TV Shows</a>
+      <a href="#">Movies</a>
+      <a href="#">New & Popular</a>
+      <a href="#">My List</a>
+    </div>
+    <img class="nav-avatar" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="User Avatar">
+  </nav>
+
+  <!-- HERO BANNER SECTION -->
+  <header class="banner">
+    <div class="banner-content">
+      <h1 class="banner-title">Stranger Things</h1>
+      <div class="banner-buttons">
+        <button class="btn play-btn" onclick="playTrailer()">
+          <i class="fas fa-play"></i> Play
+        </button>
+        <button class="btn info-btn">
+          <i class="fas fa-info-circle"></i> More Info
+        </button>
+      </div>
+      <p class="banner-description">
+        When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.
+      </p>
+    </div>
+
+    <div class="banner-fade-bottom"></div>
+  </header>
+
+  <!-- MOVIE SLIDERS SECTION -->
+  <div class="rows-container">
+    <!-- ROW 1: Trending Now -->
+    <div class="row">
+      <h2>Trending Now</h2>
+      <div class="row-posters">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500" alt="Movie">
+      </div>
+    </div>
+
+    <!-- ROW 2: Popular Action & Sci-Fi -->
+    <div class="row">
+      <h2>Popular Action & Sci-Fi</h2>
+      <div class="row-posters">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=500" alt="Movie">
+        <img class="row-poster" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500" alt="Movie">
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ ACCORDION SECTION -->
+  <section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <span>What is Netflix?</span>
+          <i class="fas fa-plus icon"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Netflix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <span>How much does Netflix cost?</span>
+          <i class="fas fa-plus icon"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Watch Netflix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for one fixed monthly fee.</p>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <div class="accordion-header">
+          <span>Where can I watch?</span>
+          <i class="fas fa-plus icon"></i>
+        </div>
+        <div class="accordion-body">
+          <p>Watch anywhere, anytime. Sign in with your Netflix account to watch instantly on the web at netflix.com from your personal computer or on any device.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRAILER POPUP MODAL -->
+  <div id="videoModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeTrailer()">&times;</span>
+      <div class="video-container">
+        <iframe id="trailerFrame" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    // MODAL VIDEO PLAYBACK LOGIC
+    const modal = document.getElementById("videoModal");
+    const trailerFrame = document.getElementById("trailerFrame");
+
+    // Official Stranger Things Trailer
+    const trailerUrl = "https://www.youtube.com/embed/b9EkMc79ZSU?autoplay=1";
+
+    function playTrailer() {
+      modal.style.display = "block";
+      trailerFrame.src = trailerUrl;
+    }
+
+    function closeTrailer() {
+      modal.style.display = "none";
+      trailerFrame.src = ""; // Stop video on close
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        closeTrailer();
+      }
+    };
+
+    // FAQ ACCORDION TOGGLE LOGIC
+    const accordionHeaders = document.querySelectorAll(".accordion-header");
+
+    accordionHeaders.forEach(header => {
+      header.addEventListener("click", () => {
+        const accordionItem = header.parentElement;
+        accordionItem.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

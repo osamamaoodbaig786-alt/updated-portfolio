@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binkhalid - Admin Dashboard</title>
+    
+    <!-- Google Fonts aur Font Awesome Icons ke liye -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js Library CDN (Circular Chart ke liye sabse zaroori) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            display: flex;
+            background-color: #f8fafc;
+            height: 100vh;
+            color: #1e293b;
+        }
+
+        /* --- Sidebar Styling --- */
+        .sidebar {
+            width: 260px;
+            background-color: #0f172a;
+            color: #94a3b8;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background-color: #4f46e5;
+            color: #ffffff;
+        }
+
+        .menu-item i {
+            margin-right: 12px;
+            width: 20px;
+        }
+
+        .version {
+            font-size: 12px;
+            color: #475569;
+        }
+
+        /* --- Main Content Area --- */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        /* Top Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            background-color: #f1f5f9;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            width: 350px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #6366f1;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .profile-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .profile-info span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Top Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .card-title {
+            font-size: 14px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .card-trend {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .trend-up { color: #10b981; }
+        .trend-down { color: #ef4444; }
+
+        .card-icon {
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 20px;
+        }
+
+        /* Bottom Section Grid */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+
+        .chart-container, .activity-container {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        /* circular chart box styling */
+        .chart-box {
+            max-width: 280px;
+            margin: 0 auto;
+        }
+
+        /* Activity List Styling */
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div>
+            <div class="logo">
+                <i class="fa-solid fa-chart-simple" style="color: #6366f1;"></i> Binkhalid
+            </div>
+            <div class="menu-item active">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </div>
+            <div class="menu-item">
+                <i class="fa-solid fa-chart-line"></i> Analytics
+            </div>
+            <div class="menu-item">
+                <i class="fa-solid fa-folder"></i> Projects
+            </div>
+            <div class="menu-item">
+                <i class="fa-solid fa-users"></i> Team
+            </div>
+            <div class="menu-item">
+                <i class="fa-solid fa-gear"></i> Settings
+            </div>
+        </div>
+        <div class="version">v1.0.2</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        
+        <!-- TOP HEADER -->
+        <div class="header">
+            <input type="text" class="search-bar" placeholder="Search anything...">
+            <div class="profile-section">
+                <div class="avatar">OB</div>
+                <div class="profile-info">
+                    <h4>Osama Baig</h4>
+                    <span>Administrator</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- STATS CARDS -->
+        <div class="cards-grid">
+            <!-- Total Revenue -->
+            <div class="card">
+                <div>
+                    <div class="card-title">Total Revenue</div>
+                    <div class="card-value">$24,500</div>
+                    <div class="card-trend trend-up">↑ +12% this month</div>
+                </div>
+                <div class="card-icon" style="background-color: #f5f3ff; color: #6366f1;"><i class="fa-solid fa-credit-card"></i></div>
+            </div>
+
+            <!-- Active Users -->
+            <div class="card">
+                <div>
+                    <div class="card-title">Active Users</div>
+                    <div class="card-value">1,420</div>
+                    <div class="card-trend trend-up">↑ +8% today</div>
+                </div>
+                <div class="card-icon" style="background-color: #e6fcf5; color: #10b981;"><i class="fa-solid fa-user"></i></div>
+            </div>
+
+            <!-- Pending Tasks -->
+            <div class="card">
+                <div>
+                    <div class="card-title">Pending Tasks</div>
+                    <div class="card-value">12</div>
+                    <div class="card-trend trend-down"><i class="fa-solid fa-triangle-exclamation"></i> -3 updates required</div>
+                </div>
+                <div class="card-icon" style="background-color: #fff5f5; color: #ef4444;"><i class="fa-solid fa-clipboard-list"></i></div>
+            </div>
+        </div>
+
+        <!-- BOTTOM CHART & ACTIVITY SECTION -->
+        <div class="bottom-grid">
+            
+            <!-- Performance Overview (Circular Chart) -->
+            <div class="chart-container">
+                <div class="section-title">Performance Overview</div>
+                <div class="chart-box">
+                    <!-- Yeh raha aapka circular chart canvas -->
+                    <canvas id="dashboardCircularChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="activity-container">
+                <div class="section-title">Recent Activity</div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <span class="dot" style="background-color: #3b82f6;"></span>
+                        Database backup completed.
+                    </li>
+                    <li class="activity-item">
+                        <span class="dot" style="background-color: #10b981;"></span>
+                        New user approved.
+                    </li>
+                    <li class="activity-item">
+                        <span class="dot" style="background-color: #f59e0b;"></span>
+                        System update scheduled.
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT CODE FOR CHART -->
+    <script>
+        // Chart.js ko initialization context dena
+        const ctx = document.getElementById('dashboardCircularChart').getContext('2d');
+        
+        // Doughnut (Circular) Chart Object create karna
+        const myChart = new Chart(ctx, {
+            type: 'doughnut', // Agar poora circle chahiye bina hole ke toh 'pie' likh dein
+            data: {
+                labels: ['Revenue', 'Active Users', 'Pending Tasks'],
+                datasets: [{
+                    label: 'Stats Distribution',
+                    data: [65, 25, 10], // Aap is data ko change kar sakte hain
+                    backgroundColor: [
+                        '#6366f1', // Blueish/Indigo (Total Revenue ke liye)
+                        '#10b981', // Green (Active Users ke liye)
+                        '#ef4444'  // Red (Pending Tasks ke liye)
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Labels chart ke neeche set karne ke liye
+                        labels: {
+                            font: {
+                                size: 12,
+                                family: "'Inter', sans-serif"
+                            },
+                            boxWidth: 12,
+                            padding: 20
+                        }
+                    }
+                },
+                cutout: '70%' // Doughnut ke andar ke hole ka size chota-bada karne ke liye
+            }
+        });
+    </script>
+</body>
+</html>

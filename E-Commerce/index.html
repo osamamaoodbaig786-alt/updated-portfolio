@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraMart - Next-Gen E-Commerce</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient Background Glow Effects -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <div class="logo-wrapper">
+        <img src="logo.png" alt="AuraMart Logo" class="logo-img" onerror="this.style.display='none'">
+      </div>
+      <span class="logo-text">Aura<span class="highlight">Mart</span></span>
+    </div>
+    
+    <div class="search-bar">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="searchInput" placeholder="Search premium tech, gadgets, audio...">
+      <span class="search-shortcut">⌘K</span>
+    </div>
+
+    <div class="nav-right">
+      <button class="icon-btn wishlist-btn" title="Wishlist">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+
+      <div class="cart-icon" id="cartBtn">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span id="cartCount" class="badge">0</span>
+      </div>
+
+      <!-- Auth Section -->
+      <div class="auth-wrapper" id="authWrapper">
+        <button class="auth-trigger-btn" id="openAuthBtn">
+          <i class="fa-solid fa-user"></i> Sign In
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-container">
+    
+    <!-- Sidebar Categories -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h3>Categories</h3>
+        <span class="count-pill">4</span>
+      </div>
+      <ul class="category-list">
+        <li class="category-btn" data-category="all">
+          <div class="icon-box"><i class="fa-solid fa-border-all"></i></div>
+          <span>All Products</span>
+        </li>
+        <li class="category-btn" data-category="audio">
+          <div class="icon-box"><i class="fa-solid fa-headphones-simple"></i></div>
+          <span>Audio Experience</span>
+        </li>
+        <li class="category-btn" data-category="laptops">
+          <div class="icon-box"><i class="fa-solid fa-laptop"></i></div>
+          <span>Laptops & Computers</span>
+        </li>
+        <li class="category-btn active" data-category="accessories">
+          <div class="icon-box"><i class="fa-solid fa-keyboard"></i></div>
+          <span>Accessories</span>
+        </li>
+      </ul>
+
+      <!-- Promo Mini Widget -->
+      <div class="sidebar-promo">
+        <div class="promo-tag">LIMITED TIME</div>
+        <h4>Get 40% Off Pro Setup</h4>
+        <p>Use code <strong>AURA40</strong> at checkout.</p>
+      </div>
+    </aside>
+
+    <!-- Content Area -->
+    <section class="products-section">
+      
+      <!-- Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="hero-badge"><i class="fa-solid fa-bolt"></i> Featured Release</span>
+          <h2>Elevate Your Workspace Tech</h2>
+          <p>Discover next-generation mechanical keyboards & minimalist accessories crafted for creators.</p>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div class="section-header">
+        <div>
+          <h2 id="categoryTitle">Accessories</h2>
+          <p id="categorySubtitle">Showing premium tech accessories</p>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid" id="productGrid">
+        <!-- Dynamically injected -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- CART DRAWER / MODAL -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h2><i class="fa-solid fa-bag-shopping"></i> Shopping Cart</h2>
+      <button class="close-cart" id="closeCartBtn">&times;</button>
+    </div>
+
+    <div class="cart-items-container" id="cartItemsContainer">
+      <!-- Cart items -->
+    </div>
+
+    <div class="cart-footer">
+      <div class="summary-line">
+        <span>Subtotal</span>
+        <span id="cartTotalPrice">$0.00</span>
+      </div>
+      <div class="summary-line highlight">
+        <span>Shipping</span>
+        <span>FREE</span>
+      </div>
+      <button class="checkout-btn" id="openCheckoutBtn">
+        Checkout Now <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- SIGN IN / SIGN UP MODAL -->
+  <div class="modal-overlay" id="authModalOverlay">
+    <div class="modal-box">
+      <button class="close-modal-btn" id="closeAuthBtn">&times;</button>
+      
+      <div class="auth-tabs">
+        <button class="tab-btn active" id="tabSignInBtn">Sign In</button>
+        <button class="tab-btn" id="tabSignUpBtn">Sign Up</button>
+      </div>
+
+      <!-- Sign In Form -->
+      <form id="signInForm" class="auth-form active">
+        <h3>Welcome Back</h3>
+        <p class="form-desc">Enter your credentials to access your account</p>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="signInEmail" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signInPassword" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="submit-action-btn">Sign In</button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signUpForm" class="auth-form">
+        <h3>Create Account</h3>
+        <p class="form-desc">Join AuraMart to get exclusive deals & track orders</p>
+
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="signUpName" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="signUpEmail" placeholder="name@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signUpPassword" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="submit-action-btn">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL (CARD & CASH) -->
+  <div class="modal-overlay" id="checkoutModalOverlay">
+    <div class="modal-box checkout-box">
+      <button class="close-modal-btn" id="closeCheckoutBtn">&times;</button>
+      
+      <h3>Complete Your Purchase</h3>
+      <p class="form-desc">Choose your preferred payment method</p>
+
+      <div class="payment-methods">
+        <label class="method-card active" id="cardOption">
+          <input type="radio" name="paymentMethod" value="card" checked>
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Credit / Debit Card</span>
+        </label>
+        
+        <label class="method-card" id="cashOption">
+          <input type="radio" name="paymentMethod" value="cash">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <span>Cash on Delivery</span>
+        </label>
+      </div>
+
+      <form id="checkoutForm">
+        <!-- Address Details -->
+        <div class="form-group">
+          <label>Shipping Address</label>
+          <input type="text" placeholder="House #, Street, City" required>
+        </div>
+
+        <!-- Card Payment Fields -->
+        <div id="cardFields" class="payment-fields active">
+          <div class="form-group">
+            <label>Cardholder Name</label>
+            <input type="text" placeholder="John Doe" class="card-input">
+          </div>
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" placeholder="1234 5678 9101 1121" class="card-input">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Expiry Date</label>
+              <input type="text" placeholder="MM/YY" class="card-input">
+            </div>
+            <div class="form-group">
+              <label>CVC / CVV</label>
+              <input type="password" placeholder="123" maxlength="4" class="card-input">
+            </div>
+          </div>
+        </div>
+
+        <!-- Cash Payment Note -->
+        <div id="cashFields" class="payment-fields">
+          <div class="info-alert">
+            <i class="fa-solid fa-circle-info"></i>
+            <p>Pay cash directly to the courier upon delivery of your order.</p>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-action-btn checkout-submit-btn">
+          Confirm & Pay <span id="checkoutTotalAmount">$0.00</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

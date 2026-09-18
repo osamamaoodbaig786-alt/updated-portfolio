@@ -1,0 +1,237 @@
+/* --- General Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f1f3f6; /* Readable background color */
+    color: #333;
+    min-height: 1500px; /* Scroll check karne ke liye page ki height barhai hai */
+}
+
+/* --- 1. Sticky Navigation Bar --- */
+.navbar {
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #283ea1; /* Deep Professional Blue */
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    z-index: 1000; /* Taake scroll karte waqt navbar cards ke peeche na chhupe */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #ff4757; /* Hover color change */
+}
+
+/* --- Layout Container --- */
+.main-content {
+    padding: 3rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.products-container {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* --- 2. Product Card & Absolute Sale Badge --- */
+.product-card {
+    background: #ffffff;
+    width: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Relative Parent */
+.image-container {
+    position: relative; 
+    width: 100%;
+    height: 220px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image doesn't distort */
+}
+
+/* Absolute Child Inside Relative Parent */
+.badge-sale {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background-color: #ff4757; /* Pop Red Color */
+    color: #ffffff;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Body Details */
+.card-details {
+    padding: 1.5rem;
+}
+
+.card-details h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.price-section {
+    margin-bottom: 1.2rem;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.new-price {
+    color: #ff4757;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.btn-add-to-cart {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #283ea1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #1e3080;
+}
+
+/* --- 3. Fixed Floating Shopping Cart Button --- */
+.floating-cart {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background-color: #ff4757;
+    color: #ffffff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 999; /* Sticky navbar (1000) se neche aur main content se upar rahega */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.floating-cart:hover {
+    transform: scale(1.08);
+    background-color: #ff2f43;
+}
+
+.floating-cart i {
+    font-size: 1.5rem;
+}
+
+/* Cart Badge Count Inside Floating Cart */
+.cart-count {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background-color: #ffffff;
+    color: #ff4757;
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #ff4757;
+}
+/* --- 4. Responsiveness (Media Queries) --- */
+
+/* Jab screen size 768px ya us se choti ho (Tablets aur Bade Mobiles) */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column; /* Logo upar aur links neeche aa jayenge */
+        gap: 10px;
+        padding: 1rem;
+    }
+
+    .nav-links a {
+        margin: 0 0.7rem; /* Links ke darmiyan space kam karne ke liye */
+        font-size: 0.9rem;
+    }
+
+    .main-content {
+        padding: 1.5rem 1rem; /* Mobile par padding kam kar di */
+    }
+
+    .product-card {
+        width: 100%; /* Mobile screen par card poori width le lega */
+        max-width: 340px; /* Lekin zyada se zyada 340px tak hi phaijega */
+    }
+}
+
+/* Jab screen size 480px ya us se choti ho (Chote Mobiles) */
+@media (max-width: 480px) {
+    .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .floating-cart {
+        bottom: 15px; /* Mobile par floating button thoda aur niche set kar diya */
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+}

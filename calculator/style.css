@@ -1,0 +1,193 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #150526, #2d0b3d, #4a0e4e, #0a0214);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    overflow: hidden;
+    position: relative;
+    perspective: 1500px;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* --- ENHANCED GLOW BUBBLES --- */
+.bubble-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.bubble {
+    position: absolute;
+    bottom: -150px;
+    background: radial-gradient(circle, rgba(255, 105, 180, 0.3) 0%, rgba(147, 51, 234, 0.1) 50%, rgba(0,0,0,0) 70%);
+    filter: blur(4px);
+    border-radius: 50%;
+    animation: floatUp 20s infinite ease-in-out;
+}
+
+.bubble:nth-child(1) { left: 10%; width: 160px; height: 160px; animation-duration: 16s; }
+.bubble:nth-child(2) { left: 30%; width: 100px; height: 100px; animation-duration: 22s; animation-delay: 2s; }
+.bubble:nth-child(3) { left: 55%; width: 200px; height: 200px; animation-duration: 26s; animation-delay: 4s; }
+.bubble:nth-child(4) { left: 75%; width: 120px; height: 120px; animation-duration: 18s; animation-delay: 1s; }
+.bubble:nth-child(5) { left: 90%; width: 150px; height: 150px; animation-duration: 30s; }
+
+@keyframes floatUp {
+    0% { bottom: -200px; transform: translateY(0) scale(0.8); opacity: 0; }
+    15% { opacity: 0.7; }
+    85% { opacity: 0.7; }
+    100% { bottom: 110vh; transform: translateY(-100px) scale(1.2); opacity: 0; }
+}
+
+/* --- AUTOMATIC 3D MOVING CONTAINER --- */
+.calculator-container {
+    position: relative;
+    z-index: 2;
+    transform-style: preserve-3d;
+    /* Yeh animation ab calculator ko automatic move karegi */
+    animation: floatAndRotate 8s ease-in-out infinite;
+}
+
+/* Auto-movement logic: Halka sa tilt aur up-down floating effect */
+@keyframes floatAndRotate {
+    0% {
+        transform: translateY(0px) rotateX(10deg) rotateY(-8deg);
+    }
+    50% {
+        transform: translateY(-15px) rotateX(5deg) rotateY(8deg);
+    }
+    100% {
+        transform: translateY(0px) rotateX(10deg) rotateY(-8deg);
+    }
+}
+
+.calculator {
+    background: rgba(30, 10, 50, 0.6);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 30px 25px 25px 25px;
+    border-radius: 32px;
+    width: 350px;
+    border: 1px solid rgba(255, 182, 193, 0.3);
+    box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        0 0 50px rgba(255, 64, 129, 0.25),
+        inset 0 0 30px rgba(255, 255, 255, 0.05);
+    transform: translateZ(50px);
+}
+
+.calc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    padding: 0 5px;
+}
+
+.brand-text {
+    color: rgba(255, 192, 203, 0.6);
+    font-size: 0.8rem;
+    letter-spacing: 3px;
+    font-weight: 800;
+    text-shadow: 0 0 8px rgba(255, 64, 129, 0.4);
+}
+
+.dots { display: flex; gap: 7px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; }
+.dot.red { background-color: #ff5f56; box-shadow: 0 0 8px #ff5f56; }
+.dot.yellow { background-color: #ffbd2e; box-shadow: 0 0 8px #ffbd2e; }
+.dot.green { background-color: #27c93f; box-shadow: 0 0 8px #27c93f; }
+
+#display {
+    width: 100%;
+    height: 85px;
+    background: rgba(10, 4, 20, 0.9);
+    border: 1px solid rgba(255, 64, 129, 0.3);
+    border-radius: 20px;
+    color: #fff;
+    font-size: 2.8rem;
+    font-weight: 300;
+    text-align: right;
+    padding: 20px;
+    margin-bottom: 25px;
+    outline: none;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        inset 0px 4px 12px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(255, 64, 129, 0.1);
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.btn {
+    height: 62px;
+    border: none;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffc2d4;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn:hover {
+    background: rgba(255, 64, 129, 0.25);
+    color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 64, 129, 0.4);
+    transform: scale(1.03) translateZ(10px);
+}
+
+.btn:active, .btn.pressed-active {
+    transform: scale(0.96) translateZ(0px);
+    background: rgba(255, 64, 129, 0.4);
+    box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5);
+    border: none;
+}
+
+.operator {
+    background: rgba(156, 39, 176, 0.25);
+    color: #f3c6ff;
+    border-top: 1px solid rgba(243, 198, 255, 0.25);
+}
+.operator:hover { background: rgba(156, 39, 176, 0.5); box-shadow: 0 0 20px rgba(156, 39, 176, 0.5); }
+
+.clear {
+    background: rgba(255, 77, 109, 0.2);
+    color: #ff9ebb;
+}
+.clear:hover { background: rgba(255, 77, 109, 0.5); box-shadow: 0 0 20px rgba(255, 77, 109, 0.5); }
+
+.equal {
+    background: linear-gradient(135deg, #ff4081, #b53cd2);
+    color: #ffffff;
+    grid-row: span 2;
+    height: 62px;
+    font-weight: 700;
+    border: none;
+    box-shadow: 0 0 20px rgba(255, 64, 129, 0.5);
+}
+.equal:hover { background: linear-gradient(135deg, #ff659b, #c64de3); box-shadow: 0 0 30px rgba(255, 64, 129, 0.7); }

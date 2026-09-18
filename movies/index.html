@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineVault Pro - Cinematic Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="ambient-glow"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="nav-top">
+                <div class="logo-wrapper">
+                    <div class="logo-icon"><i class="fa-solid fa-clapperboard"></i></div>
+                    <h1>Cine<span>Vault</span></h1>
+                </div>
+                <button id="watchlistBtn" class="watchlist-nav-btn">
+                    <i class="fa-solid fa-heart"></i> 
+                    <span>Watchlist</span>
+                    <div class="badge-count" id="watchlistCount">0</div>
+                </button>
+            </div>
+            
+            <div class="search-box-container">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search blockbusters, series, anime..." autocomplete="off">
+                    <div class="search-glow"></div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-type="">All Collections</button>
+                <button class="tab-btn" data-type="movie">Movies</button>
+                <button class="tab-btn" data-type="series">Series</button>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <main>
+            <div id="loader" class="loader hidden">
+                <div class="loader-ring"></div>
+            </div>
+            <div id="movieGrid" class="movie-grid">
+                <div class="welcome-state">
+                    <div class="welcome-icon-wrap">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <h2>Explore Cinematic Universes</h2>
+                    <p>Type any title above or browse our curated action collection instantly.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Movie Detail Modal -->
+    <div id="movieModal" class="modal hidden">
+        <div class="modal-content">
+            <button id="closeModal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div id="modalDetails" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- In-App YouTube Trailer Video Modal -->
+    <div id="trailerModal" class="modal hidden">
+        <div class="trailer-modal-content">
+            <button id="closeTrailerModal" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+            <div class="trailer-iframe-container">
+                <iframe id="trailerIframe" src="" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
